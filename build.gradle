@@ -25,4 +25,12 @@ dependencies {
     // Spring의 의존성 주입을 위한 모듈
     implementation 'org.springframework:spring-beans:5.3.9'
     implementation 'org.springframework:spring-expression:5.3.9'
+    
+    //SendingMail
+    implementation 'javax.mail:javax.mail-api:1.6.2'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    
+    
+    
 }
