@@ -1,57 +1,36 @@
 package com.javaEdu.myapp.sendingmail;
 
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import com.javaEdu.myapp.utils.MailUtil;
 
 public class SendingMailMain {
 
 	public static void main(String[] args) {
-		try {
-			// 구글 SMTP 사용하기 위한 정보 - 임시
-			String googleUserName = "wjtmxm7@gmail.com";
-			String googlePasswd = "mnftpkimimxvnvbf";
 
-			// 받는사람정보
-			String to = "hee_place@naver.com";
 
-			// 보내는 사람 묶음
-			InternetAddress[] addrArray = new InternetAddress[1];
+		List<String> recipientList = new ArrayList<>();
+		// from DB
+		recipientList.add("hee_place@naver.com");
+		recipientList.add("wjtmxm7@gmail.com");
 
-			// 받는 사람 설정
-			InternetAddress address = new InternetAddress();
-			address.setAddress(to);
-			address.setPersonal("TEST", "UTF-8");
+		Map<String, String> mailContent = new HashMap<>();
+		// value 수정
+		mailContent.put("mailTitle", "This is test mail");
+		mailContent.put("mailHtml", "This is test mail");
 
-			addrArray[0] = address;
+		//sender
+		
+		// smtp 서버 정보, 메일 내용, 받는 사람리스트
+		
+		
+		MailUtil mailUtil = new MailUtil();
+		//받는사람, 메일내용을 넘김
+		mailUtil.sendMail(recipientList, mailContent);
 
-			// 메일서버 설정
-			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.port", "587");
-
-			// 메일 내용 설정
-			Session session = Session.getDefaultInstance(props, null);
-			String emailContent = "Hello, this is a test email with plain text content.";
-			Message message = new MimeMessage(session);
-			message.setFrom(address);
-			message.setSubject("Testing JavaMail with Content Type");
-			message.setContent(emailContent, "text/html; charset=UTF-8");
-			message.setRecipients(Message.RecipientType.TO, addrArray);
-
-			Transport.send(message, googleUserName, googlePasswd);
-			System.out.println("Email sent successfully!");
-
-		} catch (Exception e) {
-			System.out.println("Sendin!");
-			throw new RuntimeException(e);
-		}
 	}
 
 }
