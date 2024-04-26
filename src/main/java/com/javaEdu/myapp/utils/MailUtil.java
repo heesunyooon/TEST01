@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MailUtil {
 
-	private static Logger logger = LogManager.getLogger();
+	private final Logger logger = LogManager.getLogger();
 
 	/**
 	 * 
@@ -23,8 +23,8 @@ public class MailUtil {
 	 * @param mailContents  (메일내용)
 	 *
 	 */
-	public void sendMail(List<String> recipientList, Map<String, String> mailContents) {
-
+	public boolean sendMail(List<String> recipientList, Map<String, String> mailContents) {
+		boolean result;
 		try {
 			// 보내는 사람 설정 (고정)
 			InternetAddress fromAddr = new InternetAddress();
@@ -58,14 +58,17 @@ public class MailUtil {
 			message.setContent(mailContents.get("mailHtml"), "text/html; charset=UTF-8");
 			message.addRecipients(Message.RecipientType.TO, toAddr);
 
-			//메세지 전송
+			// 메세지 전송
 			Transport.send(message, googleLoginId, googleAppPasswd);
+			result = true;
 
 			logger.info("Email sent successfully!");
 
 		} catch (Exception e) {
-			logger.error("error!");
-			throw new RuntimeException(e);
+			logger.error(e.getStackTrace());
+			result = false;
+//			throw new RuntimeException(e);
 		}
+		return result;
 	}
 }

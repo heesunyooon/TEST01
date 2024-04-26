@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import com.javaEdu.myapp.utils.MailUtil;
 
-public class SendingMailMain {
-
-	public static void main(String[] args) {
-
+@Controller("/mail")
+public class SendingMailController {
+	
+	@GetMapping("/send")
+	public boolean sendMail() {
 
 		List<String> recipientList = new ArrayList<>();
 		// from DB
@@ -19,7 +23,7 @@ public class SendingMailMain {
 
 		Map<String, String> mailContent = new HashMap<>();
 		// value 수정
-		mailContent.put("mailTitle", "This is test mail");
+		mailContent.put("mailTitle", "[Test]");
 		mailContent.put("mailHtml", "This is test mail");
 
 		//sender
@@ -30,6 +34,7 @@ public class SendingMailMain {
 		MailUtil mailUtil = new MailUtil();
 		//받는사람, 메일내용을 넘김
 		mailUtil.sendMail(recipientList, mailContent);
+		return true; //임시
 
 	}
 
